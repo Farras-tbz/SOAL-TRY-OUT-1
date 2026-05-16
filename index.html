@@ -851,7 +851,23 @@
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
 
+            // Debug info
+            console.log('CBT Loaded. Token from URL:', token ? 'ADA' : 'TIDAK ADA');
+
             if (!token) {
+                // Coba fallback ke localStorage
+                const savedName = localStorage.getItem('current_peserta');
+                const savedTO = localStorage.getItem('current_to');
+
+                console.log('Fallback localStorage:', savedName, 'TO:', savedTO);
+
+                if (savedName && savedTO === '1') {
+                    studentName = savedName;
+                    document.getElementById('studentNameDisplay').textContent = studentName;
+                    console.log('✅ Akses diterima via localStorage fallback');
+                    return true;
+                }
+
                 showAccessDenied();
                 return false;
             }
@@ -861,14 +877,19 @@
                 const now = Date.now();
                 const tokenAge = now - decoded.t;
 
+                console.log('Token decoded:', decoded);
+                console.log('Token age:', Math.round(tokenAge/1000), 'detik');
+
                 // Token expired after 5 minutes
                 if (tokenAge > 5 * 60 * 1000) {
+                    console.log('❌ Token expired');
                     showAccessDenied();
                     return false;
                 }
 
                 // Verify token came from main site (simple check)
                 if (!decoded.n || !decoded.t) {
+                    console.log('❌ Token invalid');
                     showAccessDenied();
                     return false;
                 }
@@ -881,9 +902,11 @@
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
 
+                console.log('✅ Akses diterima via token');
                 return true;
 
             } catch (e) {
+                console.log('❌ Error decode token:', e);
                 showAccessDenied();
                 return false;
             }
