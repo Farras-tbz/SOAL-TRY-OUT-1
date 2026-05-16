@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Try Out 1 - OSN Mathematics</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <title>CBT Try Out 1 - Wrosify</title>
+    <!-- MathJax untuk rumus matematika -->
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/tex-mml-chtml.js"></script>
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+                inlineMath: [["$", "$"], ["\\(", "\\)"]],
+                displayMath: [["$$", "$$"], ["\\[", "\\]"]]
             }
         };
     </script>
@@ -22,8 +22,9 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            -webkit-touch-callout: none;
         }
-        
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(180deg, #87CEEB 0%, #98D8E8 30%, #B0E0E6 60%, #E0F6FF 100%);
@@ -33,44 +34,57 @@
             overflow-x: hidden;
         }
 
+        /* WATERMARK ANTI SCREENSHOT */
+        .watermark-layer {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            display: none;
+        }
+        .watermark-layer.active {
+            display: block;
+        }
+        .watermark-text {
+            position: absolute;
+            color: rgba(0,0,0,0.08);
+            font-size: 18px;
+            font-weight: bold;
+            transform: rotate(-30deg);
+            white-space: nowrap;
+        }
+
         /* CLOUDS */
         .clouds-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             pointer-events: none;
             z-index: 1;
             overflow: hidden;
         }
-
         .cloud {
             position: absolute;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 100px;
             opacity: 0.8;
         }
-
         .cloud::before, .cloud::after {
             content: '';
             position: absolute;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 100px;
         }
-
         .cloud1 { width: 200px; height: 60px; top: 15%; left: -200px; animation: floatCloud 25s infinite linear; }
         .cloud1::before { width: 100px; height: 80px; top: -40px; left: 20px; }
         .cloud1::after { width: 120px; height: 60px; top: -20px; left: 80px; }
-
         .cloud2 { width: 160px; height: 50px; top: 35%; left: -160px; animation: floatCloud 20s infinite linear; animation-delay: 5s; }
         .cloud2::before { width: 80px; height: 60px; top: -30px; left: 15px; }
         .cloud2::after { width: 100px; height: 50px; top: -15px; left: 60px; }
-
         .cloud3 { width: 120px; height: 40px; top: 60%; left: -120px; animation: floatCloud 15s infinite linear; animation-delay: 10s; }
         .cloud3::before { width: 60px; height: 50px; top: -25px; left: 10px; }
         .cloud3::after { width: 80px; height: 40px; top: -10px; left: 45px; }
-
         @keyframes floatCloud {
             0% { transform: translateX(0); }
             100% { transform: translateX(calc(100vw + 300px)); }
@@ -83,7 +97,6 @@
             min-height: 100vh;
             padding: 20px;
         }
-
         .exam-header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
@@ -97,7 +110,6 @@
             flex-wrap: wrap;
             gap: 15px;
         }
-
         .exam-title {
             font-size: 1.5em;
             font-weight: 800;
@@ -106,7 +118,6 @@
             align-items: center;
             gap: 10px;
         }
-
         .timer-box {
             background: linear-gradient(135deg, #FF6B6B, #ee5a5a);
             color: white;
@@ -118,7 +129,14 @@
             align-items: center;
             gap: 10px;
         }
-
+        .timer-box.warning {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            animation: pulseTimer 1s infinite;
+        }
+        @keyframes pulseTimer {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
         .exam-main {
             display: grid;
             grid-template-columns: 1fr 300px;
@@ -126,11 +144,9 @@
             max-width: 1400px;
             margin: 0 auto;
         }
-
         @media (max-width: 1024px) {
             .exam-main { grid-template-columns: 1fr; }
         }
-
         .question-card {
             background: rgba(255, 255, 255, 0.98);
             border-radius: 25px;
@@ -138,7 +154,6 @@
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
             min-height: 500px;
         }
-
         .question-number {
             display: inline-block;
             background: linear-gradient(135deg, #00BFFF, #2980b9);
@@ -149,7 +164,6 @@
             font-size: 1.1em;
             margin-bottom: 25px;
         }
-
         .question-text {
             font-size: 1.2em;
             color: #2C3E50;
@@ -157,13 +171,11 @@
             margin-bottom: 30px;
             font-weight: 600;
         }
-
         .options-container {
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
-
         .option {
             display: flex;
             align-items: center;
@@ -175,18 +187,15 @@
             cursor: pointer;
             transition: all 0.3s;
         }
-
         .option:hover {
             background: #e3f2fd;
             border-color: #00BFFF;
             transform: translateX(10px);
         }
-
         .option.selected {
             background: #e3f2fd;
             border-color: #00BFFF;
         }
-
         .option-letter {
             width: 45px;
             height: 45px;
@@ -200,13 +209,11 @@
             border: 2px solid #ddd;
             flex-shrink: 0;
         }
-
         .option.selected .option-letter {
             background: #00BFFF;
             color: white;
             border-color: #00BFFF;
         }
-
         .answer-input {
             width: 100%;
             padding: 20px 25px;
@@ -217,20 +224,17 @@
             background: white;
             font-weight: 600;
         }
-
         .answer-input:focus {
             outline: none;
             border-color: #00BFFF;
             box-shadow: 0 0 20px rgba(0, 191, 255, 0.2);
         }
-
         .nav-buttons {
             display: flex;
             gap: 15px;
             margin-top: 40px;
             flex-wrap: wrap;
         }
-
         .nav-btn {
             padding: 15px 30px;
             border: none;
@@ -243,7 +247,6 @@
             align-items: center;
             gap: 10px;
         }
-
         .nav-btn.prev { background: #95a5a6; color: white; }
         .nav-btn.next { 
             background: linear-gradient(135deg, #4ECDC4, #16a085); 
@@ -265,20 +268,17 @@
             flex: 1;
             justify-content: center;
         }
-
         .sidebar {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-
         .nav-panel {
             background: rgba(255, 255, 255, 0.98);
             border-radius: 20px;
             padding: 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-
         .nav-panel h3 {
             font-size: 1.1em;
             color: #2C3E50;
@@ -287,13 +287,11 @@
             align-items: center;
             gap: 10px;
         }
-
         .nav-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 8px;
         }
-
         .nav-item {
             aspect-ratio: 1;
             display: flex;
@@ -306,35 +304,30 @@
             transition: all 0.3s;
             border: 2px solid transparent;
         }
-
         .nav-item.pg { background: #e3f2fd; color: #1976d2; }
         .nav-item.isian { background: #f3e5f5; color: #7b1fa2; }
         .nav-item.active { background: #00BFFF; color: white; }
         .nav-item.answered { background: #4ECDC4; color: white; }
         .nav-item.doubt { background: #FFE66D; color: #2C3E50; }
         .nav-item.locked { background: #ddd; color: #999; cursor: not-allowed; }
-
         .progress-container {
             background: rgba(255, 255, 255, 0.98);
             border-radius: 15px;
             padding: 20px 25px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
-
         .progress-bar {
             height: 12px;
             background: #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #4ECDC4, #00BFFF);
             border-radius: 10px;
             transition: width 0.5s;
         }
-
         .legend-box {
             width: 20px;
             height: 20px;
@@ -356,42 +349,35 @@
             text-align: center;
             padding: 40px;
         }
-
         .security-block.active { display: flex; }
-
         .security-icon {
             font-size: 5em;
             color: #e74c3c;
             margin-bottom: 30px;
             animation: pulse 1s infinite;
         }
-
         @keyframes pulse {
             0%, 100% { transform: scale(1); opacity: 1; }
             50% { transform: scale(1.1); opacity: 0.8; }
         }
-
         .security-title {
             font-size: 2.5em;
             color: #fff;
             margin-bottom: 20px;
             font-weight: bold;
         }
-
         .security-message {
             font-size: 1.2em;
             color: #aaa;
             max-width: 600px;
             line-height: 1.6;
         }
-
         .countdown {
             font-size: 4em;
             color: #e74c3c;
             margin: 20px 0;
             font-weight: bold;
         }
-
         .cheat-warning {
             position: fixed;
             top: 0;
@@ -406,36 +392,30 @@
             display: none;
             animation: warningFlash 0.5s infinite;
         }
-
         .cheat-warning.active { display: block; }
-
         @keyframes warningFlash {
             0%, 100% { background: #e74c3c; }
             50% { background: #c0392b; }
         }
-
         .blur-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(20px);
+            background: rgba(0,0,0,0.9);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
             z-index: 99997;
             display: none;
             align-items: center;
             justify-content: center;
             flex-direction: column;
         }
-
         .blur-overlay.active { display: flex; }
-
         .blur-message {
             color: white;
             font-size: 1.5em;
             text-align: center;
             padding: 40px;
         }
-
-        /* ACCESS DENIED */
         .access-denied {
             position: fixed;
             inset: 0;
@@ -448,28 +428,23 @@
             text-align: center;
             padding: 40px;
         }
-
         .access-denied.active { display: flex; }
-
         .access-denied i {
             font-size: 6em;
             color: #e74c3c;
             margin-bottom: 30px;
         }
-
         .access-denied h1 {
             font-size: 3em;
             color: white;
             margin-bottom: 20px;
         }
-
         .access-denied p {
             color: #aaa;
             font-size: 1.2em;
             max-width: 500px;
             margin-bottom: 30px;
         }
-
         .btn-home {
             padding: 15px 40px;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -483,8 +458,6 @@
             align-items: center;
             gap: 10px;
         }
-
-        /* NOTIFICATION */
         .notification {
             position: fixed;
             top: 20px;
@@ -498,12 +471,9 @@
             z-index: 1000;
             transition: transform 0.3s;
         }
-
         .notification.show {
             transform: translateX(-50%) translateY(0);
         }
-
-        /* COMPLETION MODAL */
         .completion-modal {
             display: none;
             position: fixed;
@@ -517,9 +487,7 @@
             align-items: center;
             justify-content: center;
         }
-
         .completion-modal.show { display: flex; }
-
         .completion-box {
             background: white;
             padding: 50px;
@@ -528,34 +496,30 @@
             max-width: 500px;
             width: 90%;
         }
-
         .completion-box h2 {
             font-size: 2em;
             color: #2C3E50;
             margin-bottom: 15px;
         }
-
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 20px;
             margin: 30px 0;
         }
-
         .stat-item {
             background: #f8f9fa;
             padding: 20px;
             border-radius: 15px;
         }
-
         .stat-number {
             font-size: 2em;
             font-weight: 800;
             color: #00BFFF;
         }
-
         .hidden { display: none !important; }
     </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -564,7 +528,7 @@
         <i class="fas fa-lock"></i>
         <h1>Akses Ditolak</h1>
         <p>Anda tidak memiliki izin untuk mengakses halaman ini. Silakan verifikasi melalui halaman utama terlebih dahulu.</p>
-        <a href="index.html" class="btn-home">
+        <a href="tryout_wrosify.html" class="btn-home">
             <i class="fas fa-home"></i> Kembali ke Beranda
         </a>
     </div>
@@ -596,6 +560,9 @@
         <p style="color: #666; margin-top: 20px;">Jawaban akan dikumpulkan otomatis...</p>
     </div>
 
+    <!-- WATERMARK LAYER -->
+    <div class="watermark-layer" id="watermarkLayer"></div>
+
     <!-- NOTIFICATION -->
     <div class="notification" id="notification">
         <i class="fas fa-info-circle"></i> Selesaikan semua soal Pilihan Ganda terlebih dahulu!
@@ -619,7 +586,7 @@
                 <div style="background: rgba(102, 126, 234, 0.2); padding: 10px 20px; border-radius: 10px; color: #2C3E50; font-weight: 600;">
                     <i class="fas fa-user"></i> <span id="studentNameDisplay">Peserta</span>
                 </div>
-                <div class="timer-box">
+                <div class="timer-box" id="timerBox">
                     <i class="fas fa-clock"></i>
                     <span id="timer">02:00:00</span>
                 </div>
@@ -693,7 +660,7 @@
             <i class="fas fa-check-circle" style="font-size: 5em; color: #4ECDC4; margin-bottom: 20px;"></i>
             <h2>Terima Kasih!</h2>
             <p>Jawaban Anda telah berhasil dikumpulkan.</p>
-            
+
             <div class="stats-grid">
                 <div class="stat-item">
                     <div class="stat-number" id="finalPG">0</div>
@@ -722,19 +689,19 @@
         const soalPG = [
             {
                 nomor: 1,
-                pertanyaan: "Misalkan $f$ adalah fungsi real yang memenuhi $f\\left(\\frac{x}{2}-1\\right)=x^2-4x+5$ untuk semua bilangan real $x$, tentukan jumlah semua bilangan real $z$ yang memenuhi $f(2z+1)=13$.",
-                pilihan: ["$\\frac{1}{2}$", "$-1$", "$-\\frac{1}{2}$", "$1$", "$-\\frac{1}{4}$"],
+                pertanyaan: "Misalkan $f$ adalah fungsi real yang memenuhi $f\left(\frac{x}{2}-1\right)=x^2-4x+5$ untuk semua bilangan real $x$, tentukan jumlah semua bilangan real $z$ yang memenuhi $f(2z+1)=13$.",
+                pilihan: ["$\frac{1}{2}$", "$-1$", "$-\frac{1}{2}$", "$1$", "$-\frac{1}{4}$"],
                 jawaban: "C"
             },
             {
                 nomor: 2,
-                pertanyaan: "Diketahui $\\overline{pq}$ dan $\\overline{rs}$ adalah dua bilangan bulat positif dua digit. Hasil kali kedua bilangan tersebut adalah $943$. Jika diketahui bahwa $p < r$ dan kedua bilangan tersebut adalah bilangan prima, tentukan nilai dari $p \\times q + s$.",
+                pertanyaan: "Diketahui $\overline{pq}$ dan $\overline{rs}$ adalah dua bilangan bulat positif dua digit. Hasil kali kedua bilangan tersebut adalah $943$. Jika diketahui bahwa $p < r$ dan kedua bilangan tersebut adalah bilangan prima, tentukan nilai dari $p \times q + s$.",
                 pilihan: ["$6$", "$-7$", "$8$", "$7$", "$14$"],
                 jawaban: "D"
             },
             {
                 nomor: 3,
-                pertanyaan: "Bilangan desimal berulang $0,363636...$ dapat dinyatakan dalam bentuk pecahan $\\frac{m}{n}$, di mana $m$ dan $n$ adalah bilangan bulat positif. Jika diketahui bahwa $n$ adalah bilangan prima, berapakah nilai dari $m \\times n$?",
+                pertanyaan: "Bilangan desimal berulang $0,363636...$ dapat dinyatakan dalam bentuk pecahan $\frac{m}{n}$, di mana $m$ dan $n$ adalah bilangan bulat positif. Jika diketahui bahwa $n$ adalah bilangan prima, berapakah nilai dari $m \times n$?",
                 pilihan: ["$44$", "$42$", "$45$", "$22$", "$-44$"],
                 jawaban: "A"
             },
@@ -764,14 +731,14 @@
             },
             {
                 nomor: 8,
-                pertanyaan: "Sebuah polinom $P(n)$ dirancang sedemikian rupa sehingga memenuhi hubungan: $P\\left(x+\\frac{1}{x}\\right)=x^2+\\frac{1}{x^2}+2024$. Jika kita mengevaluasi polinom tersebut pada titik $x=2$, berapakah nilai dari $P(2)$?",
+                pertanyaan: "Sebuah polinom $P(n)$ dirancang sedemikian rupa sehingga memenuhi hubungan: $P\left(x+\frac{1}{x}\right)=x^2+\frac{1}{x^2}+2024$. Jika kita mengevaluasi polinom tersebut pada titik $x=2$, berapakah nilai dari $P(2)$?",
                 pilihan: ["$2026$", "$2028$", "$2025$", "$4052$", "$1013$"],
                 jawaban: "A"
             },
             {
                 nomor: 9,
-                pertanyaan: "Misalkan $f$ adalah fungsi rasional yang didefinisikan untuk semua bilangan real $x \\neq 1$ dengan bentuk $f(x)=\\frac{ax+b}{x-1}$, di mana $a$ dan $b$ adalah bilangan real; diketahui bahwa fungsi ini bersifat involusi, yaitu $f(f(x))=x$ untuk semua $x$ di dalam domainnya, dan jika diketahui $f(2)=3$, tentukanlah nilai dari $f(2026)$.",
-                pilihan: ["$\\frac{2025}{2027}$", "$\\frac{2027}{2026}$", "$\\frac{2026}{2025}$", "$\\frac{2027}{2025}$", "$-\\frac{2027}{2025}$"],
+                pertanyaan: "Misalkan $f$ adalah fungsi rasional yang didefinisikan untuk semua bilangan real $x \neq 1$ dengan bentuk $f(x)=\frac{ax+b}{x-1}$, di mana $a$ dan $b$ adalah bilangan real; diketahui bahwa fungsi ini bersifat involusi, yaitu $f(f(x))=x$ untuk semua $x$ di dalam domainnya, dan jika diketahui $f(2)=3$, tentukanlah nilai dari $f(2026)$.",
+                pilihan: ["$\frac{2025}{2027}$", "$\frac{2027}{2026}$", "$\frac{2026}{2025}$", "$\frac{2027}{2025}$", "$-\frac{2027}{2025}$"],
                 jawaban: "D"
             },
             {
@@ -785,22 +752,22 @@
         const soalIsian = [
             {
                 nomor: 11,
-                pertanyaan: "Misalkan $k > 0$ adalah suatu bilangan real dan terdapat dua bilangan real berbeda $x$ dan $y$ yang memenuhi $0 < x, y < 1$, sedemikian sehingga $x$ merupakan jumlah dari deret geometri tak hingga $k + k x^2 + k x^4 + \\dots$ dan $y$ merupakan jumlah dari deret geometri tak hingga $k + k y^2 + k y^4 + \\dots$; jika diketahui bahwa kedua deret tersebut konvergen dengan jumlah yang masing-masing tepat sama dengan nilai variabel $x$ dan $y$, tentukanlah nilai dari ekspresi aljabar $x^2 + xy + y^2$ yang merepresentasikan hubungan antara kedua variabel tersebut.",
+                pertanyaan: "Misalkan $k > 0$ adalah suatu bilangan real dan terdapat dua bilangan real berbeda $x$ dan $y$ yang memenuhi $0 < x, y < 1$, sedemikian sehingga $x$ merupakan jumlah dari deret geometri tak hingga $k + k x^2 + k x^4 + \dots$ dan $y$ merupakan jumlah dari deret geometri tak hingga $k + k y^2 + k y^4 + \dots$; jika diketahui bahwa kedua deret tersebut konvergen dengan jumlah yang masing-masing tepat sama dengan nilai variabel $x$ dan $y$, tentukanlah nilai dari ekspresi aljabar $x^2 + xy + y^2$ yang merepresentasikan hubungan antara kedua variabel tersebut.",
                 jawaban: "1"
             },
             {
                 nomor: 12,
-                pertanyaan: "Tentukan nilai dari: $$\\frac{1}{2025!} + \\frac{1}{2026!} - \\frac{1}{2} + \\sum_{k=1}^{2024} \\frac{k^2 + 3k + 1}{(k+2)!}$$",
+                pertanyaan: "Tentukan nilai dari: $$\frac{1}{2025!} + \frac{1}{2026!} - \frac{1}{2} + \sum_{k=1}^{2024} \frac{k^2 + 3k + 1}{(k+2)!}$$",
                 jawaban: "1"
             },
             {
                 nomor: 13,
-                pertanyaan: "Tentukan banyaknya bilangan prima dua digit $\\overline{ab}$ yang memenuhi syarat bahwa jika kedua digitnya dipertukarkan dan kemudian masing-masing digitnya ditambah dengan $2$, maka akan terbentuk bilangan baru $\\overline{(b+2)(a+2)}$ yang juga merupakan bilangan prima dua digit.",
+                pertanyaan: "Tentukan banyaknya bilangan prima dua digit $\overline{ab}$ yang memenuhi syarat bahwa jika kedua digitnya dipertukarkan dan kemudian masing-masing digitnya ditambah dengan $2$, maka akan terbentuk bilangan baru $\overline{(b+2)(a+2)}$ yang juga merupakan bilangan prima dua digit.",
                 jawaban: "2"
             },
             {
                 nomor: 14,
-                pertanyaan: "Diberikan suku banyak $P(x) = x^3 - 5x^2 + ax + b$ yang memiliki akar-akar real $x_1$, $x_2$, dan $1$. Jika diketahui bahwa nilai dari $(x_1 - x_2)^2 = 12$, maka nilai dari $a - b$ adalah $\\dots$",
+                pertanyaan: "Diberikan suku banyak $P(x) = x^3 - 5x^2 + ax + b$ yang memiliki akar-akar real $x_1$, $x_2$, dan $1$. Jika diketahui bahwa nilai dari $(x_1 - x_2)^2 = 12$, maka nilai dari $a - b$ adalah $\dots$",
                 jawaban: "6"
             },
             {
@@ -815,12 +782,12 @@
             },
             {
                 nomor: 17,
-                pertanyaan: "Tentukan banyaknya bilangan bulat $n$ dalam rentang $1 \\le n \\le 100$ sedemikian sehingga persamaan $\\lfloor x \\rfloor + \\lceil x \\rceil + \\lfloor 2x \\rfloor + \\lceil 2x \\rceil = n$ memiliki setidaknya satu solusi real $x$.",
+                pertanyaan: "Tentukan banyaknya bilangan bulat $n$ dalam rentang $1 \le n \le 100$ sedemikian sehingga persamaan $\lfloor x \rfloor + \lceil x \rceil + \lfloor 2x \rfloor + \lceil 2x \rceil = n$ memiliki setidaknya satu solusi real $x$.",
                 jawaban: "67"
             },
             {
                 nomor: 18,
-                pertanyaan: "Tentukan jumlah dari semua solusi real $x$ yang memenuhi persamaan nilai mutlak berikut ini: $$\\left| x - |2x - 1013| \\right| = 1013$$",
+                pertanyaan: "Tentukan jumlah dari semua solusi real $x$ yang memenuhi persamaan nilai mutlak berikut ini: $$\left| x - |2x - 1013| \right| = 1013$$",
                 jawaban: "2026"
             },
             {
@@ -862,9 +829,10 @@
         let timerInterval;
         let studentName = '';
         let isExamActive = false;
-        
+        let examSubmitted = false;
+
         const SECURITY_CONFIG = {
-            maxViolations: 3,
+            maxViolations: 2,
             warningDuration: 3000,
             lockDuration: 5000
         };
@@ -877,36 +845,44 @@
         };
 
         // ============================================
-        // ACCESS VERIFICATION
+        // ACCESS VERIFICATION (TOKEN SYSTEM)
         // ============================================
         function verifyAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
-            
+
             if (!token) {
                 showAccessDenied();
                 return false;
             }
-            
+
             try {
                 const decoded = JSON.parse(atob(token));
                 const now = Date.now();
                 const tokenAge = now - decoded.t;
-                
+
+                // Token expired after 5 minutes
                 if (tokenAge > 5 * 60 * 1000) {
                     showAccessDenied();
                     return false;
                 }
-                
+
+                // Verify token came from main site (simple check)
+                if (!decoded.n || !decoded.t) {
+                    showAccessDenied();
+                    return false;
+                }
+
                 studentName = decoded.n;
                 document.getElementById('studentNameDisplay').textContent = studentName;
-                
+
+                // Clean URL
                 if (window.history.replaceState) {
                     window.history.replaceState({}, document.title, window.location.pathname);
                 }
-                
+
                 return true;
-                
+
             } catch (e) {
                 showAccessDenied();
                 return false;
@@ -919,110 +895,205 @@
         }
 
         // ============================================
-        // SECURITY SYSTEM
+        // WATERMARK SYSTEM (ANTI SCREENSHOT TRACE)
+        // ============================================
+        function initWatermark() {
+            const layer = document.getElementById('watermarkLayer');
+            const text = studentName + ' | ' + new Date().toLocaleString('id-ID');
+
+            for (let i = 0; i < 15; i++) {
+                for (let j = 0; j < 8; j++) {
+                    const el = document.createElement('div');
+                    el.className = 'watermark-text';
+                    el.textContent = text;
+                    el.style.left = (j * 200 + Math.random() * 50) + 'px';
+                    el.style.top = (i * 80 + Math.random() * 30) + 'px';
+                    layer.appendChild(el);
+                }
+            }
+            layer.classList.add('active');
+        }
+
+        // ============================================
+        // SECURITY SYSTEM - CBT MODE
         // ============================================
         function initSecurity() {
             isExamActive = true;
-            
+
+            // 1. ANTI RIGHT-CLICK
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
                 handleViolation('Right-click tidak diizinkan!');
                 return false;
             }, true);
-            
+
+            // 2. ANTI SCREENSHOT KEYS
             document.addEventListener('keydown', function(e) {
+                // PrintScreen
                 if (e.key === 'PrintScreen') {
                     e.preventDefault();
-                    handleViolation('Screenshot tidak diizinkan!');
+                    handleViolation('Screenshot (PrintScreen) diblokir!');
+                    navigator.clipboard.writeText('Screenshot tidak diizinkan');
                     return false;
                 }
-                
+
+                // Ctrl+Shift+S (Firefox screenshot)
                 if (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 's') {
                     e.preventDefault();
                     handleViolation('Screenshot tools diblokir!');
                     return false;
                 }
-                
+
+                // Cmd+Shift+3/4/5 (Mac screenshot)
                 if (e.metaKey && e.shiftKey && ['3','4','5'].indexOf(e.key) !== -1) {
                     e.preventDefault();
                     handleViolation('Screenshot diblokir!');
                     return false;
                 }
-                
+
+                // F12 / Ctrl+Shift+I/J/C (DevTools)
                 if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && ['I','J','C'].indexOf(e.key) !== -1)) {
                     e.preventDefault();
                     handleViolation('Developer Tools diblokir!');
                     return false;
                 }
-                
+
+                // Ctrl+P (Print)
                 if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'p') {
                     e.preventDefault();
                     handleViolation('Print tidak diizinkan!');
                     return false;
                 }
-                
-                if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'v')) {
+
+                // Ctrl+S (Save page)
+                if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                    e.preventDefault();
+                    handleViolation('Save page tidak diizinkan!');
+                    return false;
+                }
+
+                // Ctrl+C / Ctrl+V (Copy Paste)
+                if ((e.ctrlKey || e.metaKey) && (e.key.toLowerCase() === 'c' || e.key.toLowerCase() === 'v')) {
                     e.preventDefault();
                     return false;
                 }
+
+                // Alt+Tab detection (via Alt key)
+                if (e.altKey && e.key === 'Tab') {
+                    e.preventDefault();
+                    handleViolation('Alt+Tab tidak diizinkan!');
+                }
+
+                // Windows key / Cmd
+                if (e.metaKey && !e.shiftKey) {
+                    e.preventDefault();
+                    handleViolation('Tombol sistem diblokir!');
+                }
             }, true);
-            
-            document.addEventListener('copy', function(e) { e.preventDefault(); });
-            document.addEventListener('paste', function(e) { e.preventDefault(); });
-            document.addEventListener('cut', function(e) { e.preventDefault(); });
-            
+
+            // 3. ANTI COPY-PASTE EVENTS
+            document.addEventListener('copy', function(e) { 
+                e.preventDefault(); 
+                handleViolation('Copy tidak diizinkan!');
+            });
+            document.addEventListener('paste', function(e) { 
+                e.preventDefault(); 
+                handleViolation('Paste tidak diizinkan!');
+            });
+            document.addEventListener('cut', function(e) { 
+                e.preventDefault(); 
+            });
+            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
+            document.addEventListener('drop', function(e) { e.preventDefault(); });
+
+            // 4. ANTI TAB SWITCHING
             document.addEventListener('visibilitychange', function() {
-                if (!isExamActive || securityState.isLocked) return;
-                
+                if (!isExamActive || securityState.isLocked || examSubmitted) return;
+
                 if (document.hidden) {
                     securityState.tabSwitches++;
                     showBlurOverlay();
-                    
+
                     if (securityState.tabSwitches >= 2) {
-                        handleViolation('Terlalu sering pindah tab!');
+                        handleViolation('Terlalu sering pindah tab/browser!');
                     }
                 } else {
                     hideBlurOverlay();
                 }
             });
-            
+
+            // 5. ANTI WINDOW BLUR (minimize, alt-tab, etc)
             window.addEventListener('blur', function() {
-                if (!isExamActive || securityState.isLocked) return;
+                if (!isExamActive || securityState.isLocked || examSubmitted) return;
                 securityState.blurCount++;
-                
+
                 if (securityState.blurCount >= 3) {
                     handleViolation('Terlalu sering kehilangan fokus!');
                 } else {
-                    showCheatWarning();
+                    showCheatWarning('Jangan tinggalkan halaman ujian! (' + securityState.blurCount + '/3)');
                 }
             });
-            
+
             window.addEventListener('focus', function() {
                 hideCheatWarning();
             });
-            
+
+            // 6. FULLSCREEN ENFORCEMENT
             requestFullscreen();
             document.addEventListener('fullscreenchange', function() {
-                if (!document.fullscreenElement && isExamActive && !securityState.isLocked) {
-                    handleViolation('Fullscreen harus aktif!');
+                if (!document.fullscreenElement && isExamActive && !securityState.isLocked && !examSubmitted) {
+                    handleViolation('Fullscreen harus aktif selama ujian!');
                     setTimeout(requestFullscreen, 100);
                 }
             });
-            
-            document.addEventListener('dragstart', function(e) { e.preventDefault(); });
-            document.addEventListener('drop', function(e) { e.preventDefault(); });
-            
+
+            // 7. ANTI DEVTOOLS VIA WINDOW SIZE
             setInterval(function() {
                 const threshold = 160;
                 if (window.outerWidth - window.innerWidth > threshold || 
                     window.outerHeight - window.innerHeight > threshold) {
-                    handleViolation('Developer Tools terdeteksi!');
+                    handleViolation('Developer Tools terdeteksi! Tutup segera!');
                 }
             }, 1000);
-            
+
+            // 8. CLEAR CLIPBOARD CONTINUOUSLY
             setInterval(function() {
-                navigator.clipboard.writeText('').catch(function() {});
-            }, 500);
+                navigator.clipboard.writeText('CBT Wrosify - Copy tidak diizinkan').catch(function() {});
+            }, 300);
+
+            // 9. ANTI SCREEN RECORDING (CSS overlay flash)
+            setInterval(function() {
+                const flash = document.createElement('div');
+                flash.style.cssText = 'position:fixed;inset:0;z-index:9999;background:rgba(255,255,255,0.01);pointer-events:none;';
+                document.body.appendChild(flash);
+                setTimeout(function() { flash.remove(); }, 50);
+            }, 2000);
+
+            // 10. PREVENT LEAVING PAGE
+            window.addEventListener('beforeunload', function(e) {
+                if (isExamActive && !examSubmitted) {
+                    e.preventDefault();
+                    e.returnValue = 'Anda sedang dalam ujian. Yakin ingin keluar?';
+                    handleViolation('Mencoba meninggalkan halaman ujian!');
+                }
+            });
+
+            // 11. ANTI CONSOLE USAGE
+            setInterval(function() {
+                const start = performance.now();
+                debugger;
+                const end = performance.now();
+                if (end - start > 100) {
+                    handleViolation('Developer Tools terdeteksi via debugger!');
+                }
+            }, 3000);
+
+            // 12. DISABLE IMAGE DRAGGING
+            document.addEventListener('mousedown', function(e) {
+                if (e.target.tagName === 'IMG') {
+                    e.preventDefault();
+                }
+            });
         }
 
         function requestFullscreen() {
@@ -1037,8 +1108,9 @@
         }
 
         function handleViolation(reason) {
+            if (securityState.isLocked || examSubmitted) return;
             securityState.violations++;
-            
+
             if (securityState.violations >= SECURITY_CONFIG.maxViolations) {
                 lockExam(reason);
             } else {
@@ -1070,26 +1142,26 @@
         function lockExam(reason) {
             securityState.isLocked = true;
             isExamActive = false;
-            
+
             clearInterval(timerInterval);
-            
+
             const block = document.getElementById('securityBlock');
             document.getElementById('securityMessage').textContent = reason;
             block.classList.add('active');
-            
+
             let count = 5;
             const countdownEl = document.getElementById('securityCountdown');
-            
+
             const interval = setInterval(function() {
                 count--;
                 countdownEl.textContent = count;
-                
+
                 if (count <= 0) {
                     clearInterval(interval);
                     forceSubmit();
                 }
             }, 1000);
-            
+
             saveResult(true, reason);
         }
 
@@ -1100,12 +1172,13 @@
             renderNavigation();
             loadQuestion(0);
             startTimer();
+            initWatermark();
         }
 
         function renderNavigation() {
             const pgNav = document.getElementById('pgNav');
             const isianNav = document.getElementById('isianNav');
-            
+
             pgNav.innerHTML = '';
             isianNav.innerHTML = '';
 
@@ -1124,7 +1197,7 @@
                 const item = document.createElement('div');
                 item.className = 'nav-item isian';
                 item.textContent = i + 1;
-                
+
                 if (!pgCompleted) {
                     item.classList.add('locked');
                 } else {
@@ -1148,7 +1221,7 @@
             currentQuestion = index;
             const q = questions[index];
             const card = document.getElementById('questionCard');
-            
+
             let html = '<div class="question-number">Soal ' + q.number + '</div>';
             html += '<div class="question-text">' + q.question + '</div>';
 
@@ -1157,245 +1230,246 @@
                 q.options.forEach(function(opt, i) {
                     const letter = String.fromCharCode(65 + i);
                     const selected = answers[index] === letter ? 'selected' : '';
-                    html += '<div class="option ' + selected +                            '" onclick="selectOption(\'' + letter + '\')">' +
+                    html += '<div class="option ' + selected + '" onclick="selectOption('' + letter + '')">' +
                             '<div class="option-letter">' + letter + '</div>' +
                             '<div>' + opt + '</div>' +
                             '</div>';
-                    });
-                    html += '</div>';
-                } else {
-                    const val = answers[index] || '';
-                    html += '<input type="text" class="answer-input" id="isianInput" ' +
-                            'placeholder="Masukkan jawaban Anda..." value="' + val + '" ' +
-                            'oninput="saveIsianAnswer(this.value)">';
-                }
+                });
+                html += '</div>';
+            } else {
+                const val = answers[index] || '';
+                html += '<input type="text" class="answer-input" id="isianInput" ' +
+                        'placeholder="Masukkan jawaban Anda..." value="' + val + '" ' +
+                        'oninput="saveIsianAnswer(this.value)">';
+            }
 
-                html += '<div class="nav-buttons">' +
-                        '<button class="nav-btn prev" onclick="prevQuestion()">' +
-                        '<i class="fas fa-arrow-left"></i> Sebelumnya' +
+            html += '<div class="nav-buttons">' +
+                    '<button class="nav-btn prev" onclick="prevQuestion()">' +
+                    '<i class="fas fa-arrow-left"></i> Sebelumnya' +
+                    '</button>';
+
+            if (index < 19) {
+                html += '<button class="nav-btn next" onclick="nextQuestion()">' +
+                        'Selanjutnya <i class="fas fa-arrow-right"></i>' +
                         '</button>';
-
-                if (index < 19) {
-                    html += '<button class="nav-btn next" onclick="nextQuestion()">' +
-                            'Selanjutnya <i class="fas fa-arrow-right"></i>' +
-                            '</button>';
-                }
-
-                html += '<button class="nav-btn doubt ' + (doubts[index] ? 'active' : '') + '" ' +
-                        'onclick="toggleDoubt()">' +
-                        '<i class="fas fa-question-circle"></i> Ragu-Ragu' +
-                        '</button>' +
-                        '</div>';
-
-                card.innerHTML = html;
-                renderNavigation();
-
-                if (window.MathJax) {
-                    MathJax.typesetPromise();
-                }
             }
 
-            function selectOption(letter) {
-                answers[currentQuestion] = letter;
-                renderNavigation();
-                loadQuestion(currentQuestion);
+            html += '<button class="nav-btn doubt ' + (doubts[index] ? 'active' : '') + '" ' +
+                    'onclick="toggleDoubt()">' +
+                    '<i class="fas fa-question-circle"></i> Ragu-Ragu' +
+                    '</button>' +
+                    '</div>';
 
-                if (currentQuestion === 9) {
+            card.innerHTML = html;
+            renderNavigation();
+
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function selectOption(letter) {
+            answers[currentQuestion] = letter;
+            renderNavigation();
+            loadQuestion(currentQuestion);
+
+            if (currentQuestion === 9) {
+                checkPGCompletion();
+            }
+        }
+
+        function saveIsianAnswer(value) {
+            answers[currentQuestion] = value.trim();
+            renderNavigation();
+        }
+
+        function toggleDoubt() {
+            doubts[currentQuestion] = !doubts[currentQuestion];
+            renderNavigation();
+            loadQuestion(currentQuestion);
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                loadQuestion(currentQuestion - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < 19) {
+                if (currentQuestion === 9 && !pgCompleted) {
                     checkPGCompletion();
-                }
-            }
-
-            function saveIsianAnswer(value) {
-                answers[currentQuestion] = value.trim();
-                renderNavigation();
-            }
-
-            function toggleDoubt() {
-                doubts[currentQuestion] = !doubts[currentQuestion];
-                renderNavigation();
-                loadQuestion(currentQuestion);
-            }
-
-            function prevQuestion() {
-                if (currentQuestion > 0) {
-                    loadQuestion(currentQuestion - 1);
-                }
-            }
-
-            function nextQuestion() {
-                if (currentQuestion < 19) {
-                    if (currentQuestion === 9 && !pgCompleted) {
-                        checkPGCompletion();
-                        if (!pgCompleted) {
-                            showNotification();
-                            return;
-                        }
-                    }
-                    loadQuestion(currentQuestion + 1);
-                }
-            }
-
-            function checkPGCompletion() {
-                const pgAnswers = answers.slice(0, 10);
-                const answered = pgAnswers.filter(function(a) { return a !== null; }).length;
-                if (answered === 10) {
-                    pgCompleted = true;
-                    renderNavigation();
-                    showNotification('✅ Bagian Pilihan Ganda selesai! Silakan lanjut ke Isian Singkat.', 'success');
-                }
-                return pgCompleted;
-            }
-
-            function showNotification(msg, type) {
-                const notif = document.getElementById('notification');
-                notif.innerHTML = type === 'success' 
-                    ? '<i class="fas fa-check-circle"></i> ' + msg 
-                    : '<i class="fas fa-info-circle"></i> ' + (msg || 'Selesaikan semua soal Pilihan Ganda terlebih dahulu!');
-                notif.style.background = type === 'success' ? 'rgba(78, 205, 196, 0.95)' : 'rgba(231, 76, 60, 0.95)';
-                notif.classList.add('show');
-                setTimeout(function() {
-                    notif.classList.remove('show');
-                }, 3000);
-            }
-
-            function updateProgress() {
-                const answered = answers.filter(function(a) { return a !== null && a !== ''; }).length;
-                const percent = (answered / 20) * 100;
-                document.getElementById('progressText').textContent = answered + '/20';
-                document.getElementById('progressFill').style.width = percent + '%';
-            }
-
-            function startTimer() {
-                let totalSeconds = 2 * 60 * 60;
-                const timerEl = document.getElementById('timer');
-
-                timerInterval = setInterval(function() {
-                    if (!isExamActive) return;
-
-                    totalSeconds--;
-                    const hours = Math.floor(totalSeconds / 3600);
-                    const minutes = Math.floor((totalSeconds % 3600) / 60);
-                    const seconds = totalSeconds % 60;
-
-                    timerEl.textContent = 
-                        String(hours).padStart(2, '0') + ':' +
-                        String(minutes).padStart(2, '0') + ':' +
-                        String(seconds).padStart(2, '0');
-
-                    if (totalSeconds <= 300) {
-                        timerEl.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
-                    }
-
-                    if (totalSeconds <= 0) {
-                        clearInterval(timerInterval);
-                        forceSubmit();
-                    }
-                }, 1000);
-            }
-
-            function submitExam() {
-                const answered = answers.filter(function(a) { return a !== null && a !== ''; }).length;
-                if (answered < 20) {
-                    if (!confirm('Anda baru menjawab ' + answered + ' dari 20 soal. Yakin ingin mengumpulkan?')) {
-                        return;
-                    }
-                } else {
-                    if (!confirm('Yakin ingin mengumpulkan jawaban?')) {
+                    if (!pgCompleted) {
+                        showNotification();
                         return;
                     }
                 }
+                loadQuestion(currentQuestion + 1);
+            }
+        }
 
-                clearInterval(timerInterval);
-                forceSubmit();
+        function checkPGCompletion() {
+            const pgAnswers = answers.slice(0, 10);
+            const answered = pgAnswers.filter(function(a) { return a !== null; }).length;
+            if (answered === 10) {
+                pgCompleted = true;
+                renderNavigation();
+                showNotification('✅ Bagian Pilihan Ganda selesai! Silakan lanjut ke Isian Singkat.', 'success');
+            }
+            return pgCompleted;
+        }
+
+        function showNotification(msg, type) {
+            const notif = document.getElementById('notification');
+            notif.innerHTML = type === 'success' 
+                ? '<i class="fas fa-check-circle"></i> ' + msg 
+                : '<i class="fas fa-info-circle"></i> ' + (msg || 'Selesaikan semua soal Pilihan Ganda terlebih dahulu!');
+            notif.style.background = type === 'success' ? 'rgba(78, 205, 196, 0.95)' : 'rgba(231, 76, 60, 0.95)';
+            notif.classList.add('show');
+            setTimeout(function() {
+                notif.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateProgress() {
+            const answered = answers.filter(function(a) { return a !== null && a !== ''; }).length;
+            const percent = (answered / 20) * 100;
+            document.getElementById('progressText').textContent = answered + '/20';
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        function startTimer() {
+            let totalSeconds = 2 * 60 * 60;
+            const timerEl = document.getElementById('timer');
+            const timerBox = document.getElementById('timerBox');
+
+            timerInterval = setInterval(function() {
+                if (!isExamActive) return;
+
+                totalSeconds--;
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                timerEl.textContent = 
+                    String(hours).padStart(2, '0') + ':' +
+                    String(minutes).padStart(2, '0') + ':' +
+                    String(seconds).padStart(2, '0');
+
+                if (totalSeconds <= 300) {
+                    timerBox.classList.add('warning');
+                }
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    forceSubmit();
+                }
+            }, 1000);
+        }
+
+        function submitExam() {
+            const answered = answers.filter(function(a) { return a !== null && a !== ''; }).length;
+            if (answered < 20) {
+                if (!confirm('Anda baru menjawab ' + answered + ' dari 20 soal. Yakin ingin mengumpulkan?')) {
+                    return;
+                }
+            } else {
+                if (!confirm('Yakin ingin mengumpulkan jawaban?')) {
+                    return;
+                }
             }
 
-            function forceSubmit() {
-                isExamActive = false;
-                
-                let pgCorrect = 0;
-                let isianCorrect = 0;
+            clearInterval(timerInterval);
+            forceSubmit();
+        }
 
-                for (let i = 0; i < 10; i++) {
-                    if (answers[i] === questions[i].correct) {
-                        pgCorrect++;
-                    }
+        function forceSubmit() {
+            if (examSubmitted) return;
+            examSubmitted = true;
+            isExamActive = false;
+
+            let pgCorrect = 0;
+            let isianCorrect = 0;
+
+            for (let i = 0; i < 10; i++) {
+                if (answers[i] === questions[i].correct) {
+                    pgCorrect++;
                 }
-
-                for (let i = 10; i < 20; i++) {
-                    const userAns = (answers[i] || '').toString().trim().toLowerCase();
-                    const correctAns = questions[i].answer.toString().trim().toLowerCase();
-                    if (userAns === correctAns) {
-                        isianCorrect++;
-                    }
-                }
-
-                const totalScore = pgCorrect * 1 + isianCorrect * 4;
-
-                document.getElementById('finalPG').textContent = pgCorrect + '/10';
-                document.getElementById('finalIsian').textContent = isianCorrect + '/10';
-                document.getElementById('finalScore').textContent = totalScore + '/50';
-
-                document.getElementById('completionModal').classList.add('show');
-                
-                saveResult(false, 'Submitted normally', totalScore, pgCorrect, isianCorrect);
             }
 
-            function saveResult(isCheat, reason, score, pgCorrect, isianCorrect) {
-                const result = {
-                    name: studentName,
-                    time: new Date().toLocaleString('id-ID'),
-                    score: score || calculateScore(),
-                    pgCorrect: pgCorrect,
-                    isianCorrect: isianCorrect,
-                    isCheat: isCheat,
-                    reason: reason,
-                    answers: answers,
-                    timestamp: Date.now()
-                };
-
-                const existing = JSON.parse(localStorage.getItem('tryout_results') || '[]');
-                existing.push(result);
-                localStorage.setItem('tryout_results', JSON.stringify(existing));
+            for (let i = 10; i < 20; i++) {
+                const userAns = (answers[i] || '').toString().trim().toLowerCase();
+                const correctAns = questions[i].answer.toString().trim().toLowerCase();
+                if (userAns === correctAns) {
+                    isianCorrect++;
+                }
             }
 
-            function calculateScore() {
-                let pgCorrect = 0;
-                let isianCorrect = 0;
+            const totalScore = pgCorrect * 1 + isianCorrect * 4;
 
-                for (let i = 0; i < 10; i++) {
-                    if (answers[i] === questions[i].correct) pgCorrect++;
-                }
+            document.getElementById('finalPG').textContent = pgCorrect + '/10';
+            document.getElementById('finalIsian').textContent = isianCorrect + '/10';
+            document.getElementById('finalScore').textContent = totalScore + '/50';
 
-                for (let i = 10; i < 20; i++) {
-                    const userAns = (answers[i] || '').toString().trim().toLowerCase();
-                    const correctAns = questions[i].answer.toString().trim().toLowerCase();
-                    if (userAns === correctAns) isianCorrect++;
-                }
+            document.getElementById('completionModal').classList.add('show');
+            document.getElementById('watermarkLayer').classList.remove('active');
 
-                return pgCorrect * 1 + isianCorrect * 4;
+            saveResult(false, 'Submitted normally', totalScore, pgCorrect, isianCorrect);
+
+            // Exit fullscreen
+            if (document.exitFullscreen) {
+                document.exitFullscreen().catch(function(){});
+            }
+        }
+
+        function saveResult(isCheat, reason, score, pgCorrect, isianCorrect) {
+            const result = {
+                name: studentName,
+                time: new Date().toLocaleString('id-ID'),
+                score: score || calculateScore(),
+                pgCorrect: pgCorrect,
+                isianCorrect: isianCorrect,
+                isCheat: isCheat,
+                reason: reason,
+                answers: answers,
+                timestamp: Date.now()
+            };
+
+            const existing = JSON.parse(localStorage.getItem('tryout1_results') || '[]');
+            existing.push(result);
+            localStorage.setItem('tryout1_results', JSON.stringify(existing));
+        }
+
+        function calculateScore() {
+            let pgCorrect = 0;
+            let isianCorrect = 0;
+
+            for (let i = 0; i < 10; i++) {
+                if (answers[i] === questions[i].correct) pgCorrect++;
             }
 
-            function backToHome() {
-                window.location.href = 'index.html';
+            for (let i = 10; i < 20; i++) {
+                const userAns = (answers[i] || '').toString().trim().toLowerCase();
+                const correctAns = questions[i].answer.toString().trim().toLowerCase();
+                if (userAns === correctAns) isianCorrect++;
             }
 
-            // ============================================
-            // INITIALIZATION
-            // ============================================
-            document.addEventListener('DOMContentLoaded', function() {
-                if (verifyAccess()) {
-                    initExam();
-                    initSecurity();
-                }
-            });
+            return pgCorrect * 1 + isianCorrect * 4;
+        }
 
-            // Prevent leaving page
-            window.addEventListener('beforeunload', function(e) {
-                if (isExamActive) {
-                    e.preventDefault();
-                    e.returnValue = '';
-                }
-            });
-        </script>
-    </body>
-    </html>
+        function backToHome() {
+            window.location.href = 'tryout_wrosify.html';
+        }
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            if (verifyAccess()) {
+                initExam();
+                initSecurity();
+            }
+        });
+    </script>
+</body>
+</html>
