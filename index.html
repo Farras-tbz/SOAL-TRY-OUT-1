@@ -9,20 +9,20 @@
     <script>
         window.MathJax = {
             tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']],
-                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                inlineMath: [["$", "$"], ["\\(", "\\)"]],
+                displayMath: [["$$", "$$"], ["\\[", "\\]"]],
                 processEscapes: true,
                 processEnvironments: true
             },
             options: {
-                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+                skipHtmlTags: ["script", "noscript", "style", "textarea", "pre"]
             }
         };
     </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; -webkit-user-select: none; }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #fff;
             overflow-x: hidden;
@@ -170,12 +170,7 @@
         .q-nav-btn:hover { border-color: #3498db; }
         .q-nav-btn.answered { background: #27ae60; border-color: #27ae60; }
         .q-nav-btn.current { background: #3498db; border-color: #3498db; }
-        .q-nav-btn.flagged { border-color: #f39c12; position: relative; }
-        .q-nav-btn.flagged::after {
-            content: "\f024"; font-family: "Font Awesome 6 Free";
-            position: absolute; top: -5px; right: -5px;
-            color: #f39c12; font-size: 10px;
-        }
+        .q-nav-btn.flagged { border-color: #f39c12; }
         .flag-btn {
             background: rgba(243, 156, 18, 0.2);
             border: 1px solid #f39c12;
@@ -264,7 +259,7 @@
     <div class="violation-count" id="violation-count">Pelanggaran: 0/2</div>
 
     <div id="access-denied">
-        <h1 style="color: #e74c3c; font-size: 48px; margin-bottom: 20px;">\u26A0 Akses Ditolak</h1>
+        <h1 style="color: #e74c3c; font-size: 48px; margin-bottom: 20px;">&#9888; Akses Ditolak</h1>
         <p style="color: #bdc3c7; font-size: 18px; max-width: 600px;">
             Anda harus login melalui halaman utama terlebih dahulu.<br>
             Token tidak valid atau sudah expired.
@@ -275,7 +270,7 @@
     </div>
 
     <div id="security-overlay">
-        <h2>\u26A0 Pelanggaran Keamanan Terdeteksi!</h2>
+        <h2>&#9888; Pelanggaran Keamanan Terdeteksi!</h2>
         <p id="security-msg">Anda melakukan pelanggaran. Ujian akan dikunci setelah 2 kali pelanggaran.</p>
         <p id="security-count">Pelanggaran: <span id="v-count">0</span>/2</p>
         <button class="btn" id="security-btn" onclick="dismissSecurity()">Saya Mengerti</button>
@@ -311,144 +306,143 @@
     <script>
 
     // ==================== KONFIGURASI ====================
-    const EXAM_DURATION = 7200; // 2 jam dalam detik
+    const EXAM_DURATION = 7200;
     const MAX_VIOLATIONS = 2;
-    const TOKEN_EXPIRY = 5 * 60 * 1000; // 5 menit
+    const TOKEN_EXPIRY = 5 * 60 * 1000;
 
-    // ==================== DATABASE SOAL TO1 ====================
-    // Semua LaTeX menggunakan \\ (double backslash) agar JS menghasilkan \ (single backslash)
+    // ==================== DATABASE SOAL TO1 (ASLI) ====================
     const questions = [
         // === PILIHAN GANDA (1-10) ===
         {
             id: 1,
-            type: 'pg',
-            question: 'Diketahui fungsi $f(x)$ memenuhi $f\\left(\\frac{x}{2}-1\\right) = x + 3$ untuk setiap bilangan real $x$. Nilai dari $f(2)$ adalah ....',
-            options: ['5', '7', '9', '11', '13'],
-            correct: 2 // index 2 = 9
-        },
-        {
-            id: 2,
-            type: 'pg',
-            question: 'Banyaknya bilangan prima $p$ sehingga $p + 2$ dan $p + 6$ juga prima adalah ....',
-            options: ['1', '2', '3', '4', 'Tak hingga'],
+            type: "pg",
+            question: "Misalkan $f$ adalah fungsi real yang memenuhi $f\\left(\\frac{x}{2}-1\\right)=x^2-4x+5$ untuk semua bilangan real $x$, tentukan jumlah semua bilangan real $z$ yang memenuhi $f(2z+1)=13$.",
+            options: ["$\\frac{1}{2}$", "$-1$", "$-\\frac{1}{2}$", "$1$", "$-\\frac{1}{4}$"],
             correct: 2
         },
         {
+            id: 2,
+            type: "pg",
+            question: "Diketahui $\\overline{pq}$ dan $\\overline{rs}$ adalah dua bilangan bulat positif dua digit. Hasil kali kedua bilangan tersebut adalah $943$. Jika diketahui bahwa $p < r$ dan kedua bilangan tersebut adalah bilangan prima, tentukan nilai dari $p \\times q + s$.",
+            options: ["$6$", "$-7$", "$8$", "$7$", "$14$"],
+            correct: 3
+        },
+        {
             id: 3,
-            type: 'pg',
-            question: 'Jika $P(x) = x^3 + ax^2 + bx + c$ memiliki akar-akar $1$, $2$, dan $3$, maka nilai $a + b + c$ adalah ....',
-            options: ['-6', '-4', '-2', '0', '2'],
+            type: "pg",
+            question: "Bilangan desimal berulang $0,363636...$ dapat dinyatakan dalam bentuk pecahan $\\frac{m}{n}$, di mana $m$ dan $n$ adalah bilangan bulat positif. Jika diketahui bahwa $n$ adalah bilangan prima, berapakah nilai dari $m \\times n$?",
+            options: ["$44$", "$42$", "$45$", "$22$", "$-44$"],
             correct: 0
         },
         {
             id: 4,
-            type: 'pg',
-            question: 'Suku ke-10 dari barisan aritmetika yang suku pertamanya $5$ dan bedanya $3$ adalah ....',
-            options: ['28', '30', '32', '34', '36'],
+            type: "pg",
+            question: "Sebuah barisan bilangan didefinisikan dengan $a_1=1$ dan $a_{n+1}=a_n+2n+1$. Tentukan nilai $n$ terkecil yang menyebabkan $a_n$ menjadi bilangan kuadrat sempurna yang nilainya mendekati tahun $2026$.",
+            options: ["$44$", "$54$", "$45$", "$90$", "$46$"],
             correct: 2
         },
         {
             id: 5,
-            type: 'pg',
-            question: 'Jumlah semua akar real dari persamaan $\\sqrt{x+3} = x - 3$ adalah ....',
-            options: ['3', '4', '5', '6', '7'],
-            correct: 3
+            type: "pg",
+            question: "Misalkan $f(x)$ adalah suatu polinom monik berderajat $5$ yang memenuhi kondisi $f(1)=4$, $f(2)=7$, $f(3)=12$, $f(4)=19$, dan $f(5)=28$, maka tentukanlah nilai dari $f(6)$.",
+            options: ["$160$", "$158$", "$195$", "$169$", "$159$"],
+            correct: 4
         },
         {
             id: 6,
-            type: 'pg',
-            question: 'Nilai dari $\\sum_{k=1}^{100} \\frac{1}{\\sqrt{k} + \\sqrt{k+1}}$ adalah ....',
-            options: ['8', '9', '10', '11', '12'],
-            correct: 2
+            type: "pg",
+            question: "Misalkan $P(x)$ adalah polinom tak konstan dengan koefisien bilangan bulat tak negatif dan memenuhi $P(10)=2021$. Diketahui pula bahwa terdapat sekurang-kurangnya satu koefisien pada suku berderajat positif yang tidak nol. Jika $m$ dan $M$ berturut-turut menyatakan nilai minimum dan maksimum yang mungkin dari $P(11)$, maka nilai $m+M$ adalah ....",
+            options: ["$2018$", "$2017$", "$2016$", "$2027$", "$1008$"],
+            correct: 1
         },
         {
             id: 7,
-            type: 'pg',
-            question: 'Banyaknya pasangan bilangan bulat $(x,y)$ yang memenuhi $x^2 + y^2 < 25$ adalah ....',
-            options: ['60', '65', '69', '72', '80'],
-            correct: 2
+            type: "pg",
+            question: "Misalkan $P(x)$ adalah polinom derajat $n$ yang memenuhi $P(x)=P(x-1)+2x-1$. Jika diketahui bahwa nilai konstanta atau $P(0)=2025$, berapakah nilai dari $P(1)$?",
+            options: ["$2025$", "$2027$", "$2024$", "$2026$", "$1013$"],
+            correct: 3
         },
         {
             id: 8,
-            type: 'pg',
-            question: 'Jika $\\alpha$ dan $\\beta$ adalah akar-akar dari $x^2 - 5x + 3 = 0$, maka nilai $\\alpha^2 + \\beta^2$ adalah ....',
-            options: ['15', '17', '19', '21', '25'],
-            correct: 2
-        },
-        {
-            id: 9,
-            type: 'pg',
-            question: 'Sisa pembagian $2^{2024}$ oleh $7$ adalah ....',
-            options: ['1', '2', '3', '4', '5'],
+            type: "pg",
+            question: "Sebuah polinom $P(n)$ dirancang sedemikian rupa sehingga memenuhi hubungan: $P\\left(x+\\frac{1}{x}\\right)=x^2+\\frac{1}{x^2}+2024$. Jika kita mengevaluasi polinom tersebut pada titik $x=2$, berapakah nilai dari $P(2)$?",
+            options: ["$2026$", "$2028$", "$2025$", "$4052$", "$1013$"],
             correct: 0
         },
         {
+            id: 9,
+            type: "pg",
+            question: "Misalkan $f$ adalah fungsi rasional yang didefinisikan untuk semua bilangan real $x \\neq 1$ dengan bentuk $f(x)=\\frac{ax+b}{x-1}$, di mana $a$ dan $b$ adalah bilangan real; diketahui bahwa fungsi ini bersifat involusi, yaitu $f(f(x))=x$ untuk semua $x$ di dalam domainnya, dan jika diketahui $f(2)=3$, tentukanlah nilai dari $f(2026)$.",
+            options: ["$\\frac{2025}{2027}$", "$\\frac{2027}{2026}$", "$\\frac{2026}{2025}$", "$\\frac{2027}{2025}$", "$-\\frac{2027}{2025}$"],
+            correct: 3
+        },
+        {
             id: 10,
-            type: 'pg',
-            question: 'Nilai minimum dari $f(x) = |x-1| + |x-2| + |x-3|$ untuk $x$ bilangan real adalah ....',
-            options: ['1', '2', '3', '4', '6'],
-            correct: 1
+            type: "pg",
+            question: "Misalkan $n$ adalah bilangan asli. Diketahui bahwa $n+26$ dan $n+2026$ keduanya merupakan bilangan kuadrat sempurna. Tentukan nilai $n$ terbesar yang mungkin.",
+            options: ["$248976$", "$249875$", "$248974$", "$248795$", "$248975$"],
+            correct: 4
         },
         // === ISIAN SINGKAT (11-20) ===
         {
             id: 11,
-            type: 'isian',
-            question: 'Jumlah suku pertama deret geometri tak hingga $1 + \\frac{1}{2} + \\frac{1}{4} + \\frac{1}{8} + \\cdots$ adalah ....',
-            answer: '2'
+            type: "isian",
+            question: "Misalkan $k > 0$ adalah suatu bilangan real dan terdapat dua bilangan real berbeda $x$ dan $y$ yang memenuhi $0 < x, y < 1$, sedemikian sehingga $x$ merupakan jumlah dari deret geometri tak hingga $k + k x^2 + k x^4 + \\dots$ dan $y$ merupakan jumlah dari deret geometri tak hingga $k + k y^2 + k y^4 + \\dots$; jika diketahui bahwa kedua deret tersebut konvergen dengan jumlah yang masing-masing tepat sama dengan nilai variabel $x$ dan $y$, tentukanlah nilai dari ekspresi aljabar $x^2 + xy + y^2$ yang merepresentasikan hubungan antara kedua variabel tersebut.",
+            answer: "1"
         },
         {
             id: 12,
-            type: 'isian',
-            question: 'Banyaknya nol di akhir dari $100!$ (faktorial dari 100) adalah ....',
-            answer: '24'
+            type: "isian",
+            question: "Tentukan nilai dari: $$\\frac{1}{2025!} + \\frac{1}{2026!} - \\frac{1}{2} + \\sum_{k=1}^{2024} \\frac{k^2 + 3k + 1}{(k+2)!}$$",
+            answer: "1"
         },
         {
             id: 13,
-            type: 'isian',
-            question: 'Nilai dari $\\left| \\frac{1}{2} - \\sqrt{2} \\right| + \\left| \\sqrt{2} - 2 \\right|$ adalah .... (tulis dalam bentuk pecahan sederhana, misal: 3/2)',
-            answer: '3/2'
+            type: "isian",
+            question: "Tentukan banyaknya bilangan prima dua digit $\\overline{ab}$ yang memenuhi syarat bahwa jika kedua digitnya dipertukarkan dan kemudian masing-masing digitnya ditambah dengan $2$, maka akan terbentuk bilangan baru $\\overline{(b+2)(a+2)}$ yang juga merupakan bilangan prima dua digit.",
+            answer: "2"
         },
         {
             id: 14,
-            type: 'isian',
-            question: 'Jika $2^x + 2^{-x} = 3$, maka nilai dari $4^x + 4^{-x}$ adalah ....',
-            answer: '7'
+            type: "isian",
+            question: "Diberikan suku banyak $P(x) = x^3 - 5x^2 + ax + b$ yang memiliki akar-akar real $x_1$, $x_2$, dan $1$. Jika diketahui bahwa nilai dari $(x_1 - x_2)^2 = 12$, maka nilai dari $a - b$ adalah $\\dots$",
+            answer: "6"
         },
         {
             id: 15,
-            type: 'isian',
-            question: 'Banyaknya bilangan bulat positif $n$ sehingga $n^2 + n + 1$ habis dibagi oleh $5$ dan $n \\leq 100$ adalah ....',
-            answer: '40'
+            type: "isian",
+            question: "Diketahui dua bilangan real $x$ dan $y$ memenuhi sistem persamaan $|2x - 4| + |3y + 9| = 12$ dan $|2x - 4| - |3y + 9| = 4$; jika $S$ adalah himpunan semua nilai yang mungkin untuk $x - y$, tentukan jumlah dari seluruh anggota himpunan $S$.",
+            answer: "20"
         },
         {
             id: 16,
-            type: 'isian',
-            question: 'Nilai dari $\\log_2(3) \\cdot \\log_3(4) \\cdot \\log_4(5) \\cdot \\log_5(6) \\cdot \\log_6(7) \\cdot \\log_7(8)$ adalah ....',
-            answer: '3'
+            type: "isian",
+            question: "Misalkan $x, y,$ dan $z$ adalah tiga bilangan bulat yang memenuhi sistem persamaan eksponensial $2^x + 2^y + 2^z = 73$, $2^{x+y} + 2^{y+z} + 2^{z+x} = 584$, dan $x + y + z = 9$, maka tentukanlah nilai dari ekspresi aljabar $x^2 + y^2 + z^2$.",
+            answer: "45"
         },
         {
             id: 17,
-            type: 'isian',
-            question: 'Jika $a$ dan $b$ adalah bilangan bulat positif sehingga $a^2 - b^2 = 2024$, nilai terkecil yang mungkin untuk $a + b$ adalah ....',
-            answer: '46'
+            type: "isian",
+            question: "Tentukan banyaknya bilangan bulat $n$ dalam rentang $1 \\le n \\le 100$ sedemikian sehingga persamaan $\\lfloor x \\rfloor + \\lceil x \\rceil + \\lfloor 2x \\rfloor + \\lceil 2x \\rceil = n$ memiliki setidaknya satu solusi real $x$.",
+            answer: "67"
         },
         {
             id: 18,
-            type: 'isian',
-            question: 'Banyaknya subset dari himpunan $\{1, 2, 3, 4, 5, 6\}$ yang mengandung tepat 3 elemen dan jumlah elemen-elemennya habis dibagi 3 adalah ....',
-            answer: '8'
+            type: "isian",
+            question: "Tentukan jumlah dari semua solusi real $x$ yang memenuhi persamaan nilai mutlak berikut ini: $$\\left| x - |2x - 1013| \\right| = 1013$$",
+            answer: "2026"
         },
         {
             id: 19,
-            type: 'isian',
-            question: 'Nilai dari $\\sum_{k=1}^{20} k \\cdot \\binom{20}{k}$ adalah ....',
-            answer: '10485760'
+            type: "isian",
+            question: "Diberikan fungsi $f(x)$ yang memenuhi persamaan berikut untuk setiap bilangan real $x$: $$2f(x) + f(2026 - x) = 3x$$ Tentukan nilai dari $f(2026)$.",
+            answer: "4052"
         },
         {
             id: 20,
-            type: 'isian',
-            question: 'Jika $f(n)$ menyatakan banyaknya faktor positif dari $n$, maka nilai dari $f(1) + f(2) + f(3) + \\cdots + f(50)$ adalah ....',
-            answer: '174'
+            type: "isian",
+            question: "Misalkan $(a_n)$ adalah barisan bilangan real yang memenuhi $a_1 = 1$ dan $n a_{n+1} = (n + 2) a_n + 6$ untuk setiap bilangan asli $n$, tentukan nilai dari $a_{2026}$.",
+            answer: "8213401"
         }
     ];
 
@@ -460,36 +454,34 @@
     let timeLeft = EXAM_DURATION;
     let timerInterval;
     let examSubmitted = false;
-    let userName = '';
+    let userName = "";
     let tokenValid = false;
 
     // ==================== TOKEN VALIDATION ====================
     function validateToken() {
         const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
+        const token = params.get("token");
 
-        console.log('=== CBT DEBUG ===');
-        console.log('Hostname:', window.location.hostname);
-        console.log('Path:', window.location.pathname);
-        console.log('Token from URL:', token ? 'ADA' : 'TIDAK ADA');
+        console.log("=== CBT DEBUG TO1 ===");
+        console.log("Hostname:", window.location.hostname);
+        console.log("Path:", window.location.pathname);
+        console.log("Token from URL:", token ? "ADA" : "TIDAK ADA");
 
-        // Coba dari URL parameter
         if (token) {
             try {
                 const decoded = JSON.parse(atob(token));
-                console.log('Decoded token:', decoded);
+                console.log("Decoded token:", decoded);
                 if (decoded.n && decoded.t && (Date.now() - decoded.t) < TOKEN_EXPIRY) {
                     userName = decoded.n;
                     tokenValid = true;
                     return true;
                 }
             } catch (e) {
-                console.log('Token decode error:', e);
+                console.log("Token decode error:", e);
             }
         }
 
-        // Fallback ke localStorage
-        const saved = localStorage.getItem('to1_token');
+        const saved = localStorage.getItem("to1_token");
         if (saved) {
             try {
                 const decoded = JSON.parse(atob(saved));
@@ -507,19 +499,18 @@
     // ==================== INIT ====================
     function init() {
         if (!validateToken()) {
-            document.getElementById('access-denied').classList.add('active');
+            document.getElementById("access-denied").classList.add("active");
             return;
         }
 
-        document.getElementById('main-header').style.display = 'flex';
-        document.getElementById('main-content').style.display = 'block';
-        document.getElementById('user-info').textContent = 'Peserta: ' + userName;
+        document.getElementById("main-header").style.display = "flex";
+        document.getElementById("main-content").style.display = "block";
+        document.getElementById("user-info").textContent = "Peserta: " + userName;
 
-        // Setup watermark
-        const wm = document.getElementById('watermark');
+        const wm = document.getElementById("watermark");
         for (let i = 0; i < 15; i++) {
-            const span = document.createElement('span');
-            span.textContent = userName + ' | ' + new Date().toLocaleString('id-ID');
+            const span = document.createElement("span");
+            span.textContent = userName + " | " + new Date().toLocaleString("id-ID");
             wm.appendChild(span);
         }
 
@@ -528,7 +519,6 @@
         startTimer();
         initSecurity();
 
-        // Re-render MathJax
         if (window.MathJax && MathJax.typesetPromise) {
             MathJax.typesetPromise();
         }
@@ -536,15 +526,15 @@
 
     // ==================== RENDER ====================
     function renderNav() {
-        const nav = document.getElementById('question-nav');
-        nav.innerHTML = '';
+        const nav = document.getElementById("question-nav");
+        nav.innerHTML = "";
         questions.forEach((q, i) => {
-            const btn = document.createElement('button');
-            btn.className = 'q-nav-btn';
+            const btn = document.createElement("button");
+            btn.className = "q-nav-btn";
             btn.textContent = i + 1;
-            if (i === 0) btn.classList.add('current');
-            if (answers[q.id] !== undefined) btn.classList.add('answered');
-            if (flagged.has(q.id)) btn.classList.add('flagged');
+            if (i === 0) btn.classList.add("current");
+            if (answers[q.id] !== undefined) btn.classList.add("answered");
+            if (flagged.has(q.id)) btn.classList.add("flagged");
             btn.onclick = () => loadQuestion(i);
             nav.appendChild(btn);
         });
@@ -553,49 +543,46 @@
     function loadQuestion(idx) {
         currentQ = idx;
         const q = questions[idx];
-        const container = document.getElementById('question-container');
+        const container = document.getElementById("question-container");
 
-        let html = '<div class="question-box">';
-        html += '<div class="question-number">Soal ' + q.id;
-        html += '<span class="type-badge ' + (q.type === 'pg' ? 'type-pg' : 'type-isian') + '">';
-        html += (q.type === 'pg' ? 'Pilihan Ganda' : 'Isian Singkat') + '</span></div>';
-        html += '<div class="question-text">' + q.question + '</div>';
+        let html = "<div class=\"question-box\">";
+        html += "<div class=\"question-number\">Soal " + q.id;
+        html += "<span class=\"type-badge " + (q.type === "pg" ? "type-pg" : "type-isian") + "\">";
+        html += (q.type === "pg" ? "Pilihan Ganda" : "Isian Singkat") + "</span></div>";
+        html += "<div class=\"question-text\">" + q.question + "</div>";
 
-        if (q.type === 'pg') {
-            html += '<div class="options">';
-            const letters = ['A', 'B', 'C', 'D', 'E'];
+        if (q.type === "pg") {
+            html += "<div class=\"options\">";
+            const letters = ["A", "B", "C", "D", "E"];
             q.options.forEach((opt, i) => {
-                const selected = answers[q.id] === i ? 'selected' : '';
-                html += '<div class="option ' + selected + '" onclick="selectOption(' + i + ')">';
-                html += '<div class="option-letter">' + letters[i] + '</div>';
-                html += '<div>' + opt + '</div></div>';
+                const selected = answers[q.id] === i ? "selected" : "";
+                html += "<div class=\"option " + selected + "\" onclick=\"selectOption(" + i + ")\">";
+                html += "<div class=\"option-letter\">" + letters[i] + "</div>";
+                html += "<div>" + opt + "</div></div>";
             });
-            html += '</div>';
+            html += "</div>";
         } else {
-            const val = answers[q.id] || '';
-            html += '<input type="text" class="input-answer" id="input-' + q.id + '" ';
-            html += 'value="' + val + '" placeholder="Ketik jawaban Anda..." ';
-            html += 'oninput="saveInput(' + q.id + ', this.value)">';
+            const val = answers[q.id] || "";
+            html += "<input type=\"text\" class=\"input-answer\" id=\"input-" + q.id + "\" ";
+            html += "value=\"" + val + "\" placeholder=\"Ketik jawaban Anda...\" ";
+            html += "oninput=\"saveInput(" + q.id + ", this.value)\">";
         }
 
-        html += '<button class="flag-btn ' + (flagged.has(q.id) ? 'flagged' : '') + '" ';
-        html += 'onclick="toggleFlag(' + q.id + ')">';
-        html += (flagged.has(q.id) ? '\\u2713 Diberi Tanda' : '\\u2691 Beri Tanda') + '</button>';
-        html += '</div>';
+        html += "<button class=\"flag-btn " + (flagged.has(q.id) ? "flagged" : "") + "\" ";
+        html += "onclick=\"toggleFlag(" + q.id + ")\">";
+        html += (flagged.has(q.id) ? "&#10003; Diberi Tanda" : "&#9873; Beri Tanda") + "</button>";
+        html += "</div>";
 
         container.innerHTML = html;
 
-        // Update nav
-        document.querySelectorAll('.q-nav-btn').forEach((btn, i) => {
-            btn.classList.toggle('current', i === idx);
+        document.querySelectorAll(".q-nav-btn").forEach((btn, i) => {
+            btn.classList.toggle("current", i === idx);
         });
 
-        // Update buttons
-        document.getElementById('btn-prev').disabled = idx === 0;
-        document.getElementById('btn-next').style.display = idx === questions.length - 1 ? 'none' : 'inline-block';
-        document.getElementById('btn-submit').style.display = idx === questions.length - 1 ? 'inline-block' : 'none';
+        document.getElementById("btn-prev").disabled = idx === 0;
+        document.getElementById("btn-next").style.display = idx === questions.length - 1 ? "none" : "inline-block";
+        document.getElementById("btn-submit").style.display = idx === questions.length - 1 ? "inline-block" : "none";
 
-        // Re-render MathJax
         if (window.MathJax && MathJax.typesetPromise) {
             MathJax.typesetPromise([container]);
         }
@@ -615,12 +602,12 @@
 
     function updateNavAnswered(qid) {
         const idx = questions.findIndex(q => q.id === qid);
-        const btn = document.querySelectorAll('.q-nav-btn')[idx];
+        const btn = document.querySelectorAll(".q-nav-btn")[idx];
         if (btn) {
-            if (answers[qid] !== undefined && answers[qid] !== '') {
-                btn.classList.add('answered');
+            if (answers[qid] !== undefined && answers[qid] !== "") {
+                btn.classList.add("answered");
             } else {
-                btn.classList.remove('answered');
+                btn.classList.remove("answered");
             }
         }
     }
@@ -656,18 +643,18 @@
         const h = Math.floor(timeLeft / 3600);
         const m = Math.floor((timeLeft % 3600) / 60);
         const s = timeLeft % 60;
-        const timer = document.getElementById('timer');
-        timer.textContent = String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+        const timer = document.getElementById("timer");
+        timer.textContent = String(h).padStart(2, "0") + ":" + String(m).padStart(2, "0") + ":" + String(s).padStart(2, "0");
 
-        timer.classList.remove('warning', 'danger');
-        if (timeLeft < 300) timer.classList.add('danger');
-        else if (timeLeft < 900) timer.classList.add('warning');
+        timer.classList.remove("warning", "danger");
+        if (timeLeft < 300) timer.classList.add("danger");
+        else if (timeLeft < 900) timer.classList.add("warning");
     }
 
     // ==================== SUBMIT ====================
     function submitExam(auto = false) {
         if (examSubmitted) return;
-        if (!auto && !confirm('Yakin ingin mengumpulkan jawaban?')) return;
+        if (!auto && !confirm("Yakin ingin mengumpulkan jawaban?")) return;
 
         examSubmitted = true;
         clearInterval(timerInterval);
@@ -675,29 +662,27 @@
         let correct = 0;
         let answered = 0;
         questions.forEach(q => {
-            if (answers[q.id] !== undefined && answers[q.id] !== '') {
+            if (answers[q.id] !== undefined && answers[q.id] !== "") {
                 answered++;
-                if (q.type === 'pg') {
+                if (q.type === "pg") {
                     if (answers[q.id] === q.correct) correct++;
                 } else {
-                    // Isian: case insensitive, strip spaces
-                    const userAns = String(answers[q.id]).toLowerCase().replace(/\s/g, '');
-                    const correctAns = String(q.answer).toLowerCase().replace(/\s/g, '');
+                    const userAns = String(answers[q.id]).toLowerCase().replace(/\s/g, "");
+                    const correctAns = String(q.answer).toLowerCase().replace(/\s/g, "");
                     if (userAns === correctAns) correct++;
                 }
             }
         });
 
-        const score = correct * 5; // skala 0-100
-        document.getElementById('final-score').textContent = score;
-        document.getElementById('result-detail').innerHTML = 
-            'Benar: ' + correct + ' dari ' + questions.length + ' soal<br>' +
-            'Dijawab: ' + answered + ' soal<br>' +
-            'Pelanggaran: ' + violations + ' kali<br>' +
-            'Sisa waktu: ' + document.getElementById('timer').textContent;
-        document.getElementById('result-modal').classList.add('active');
+        const score = correct * 5;
+        document.getElementById("final-score").textContent = score;
+        document.getElementById("result-detail").innerHTML = 
+            "Benar: " + correct + " dari " + questions.length + " soal<br>" +
+            "Dijawab: " + answered + " soal<br>" +
+            "Pelanggaran: " + violations + " kali<br>" +
+            "Sisa waktu: " + document.getElementById("timer").textContent;
+        document.getElementById("result-modal").classList.add("active");
 
-        // Save to localStorage
         const result = {
             name: userName,
             score: score,
@@ -709,23 +694,23 @@
             timestamp: Date.now(),
             answers: answers
         };
-        localStorage.setItem('to1_results', JSON.stringify(result));
-        console.log('Result saved:', result);
+        localStorage.setItem("to1_results", JSON.stringify(result));
+        console.log("Result saved:", result);
     }
 
     function finishExam() {
-        document.getElementById('result-modal').classList.remove('active');
-        document.getElementById('main-content').innerHTML = 
-            '<div style="text-align:center;padding:50px;">' +
-            '<h2 style="color:#27ae60;">Ujian Selesai</h2>' +
-            '<p style="color:#bdc3c7;margin-top:20px;">Terima kasih telah mengikuti Try Out 1.</p>' +
-            '<p style="color:#bdc3c7;">Hasil telah tersimpan. Silakan tutup browser.</p>' +
-            '</div>';
-        document.getElementById('main-header').style.display = 'none';
+        document.getElementById("result-modal").classList.remove("active");
+        document.getElementById("main-content").innerHTML = 
+            "<div style=\"text-align:center;padding:50px;\">" +
+            "<h2 style=\"color:#27ae60;\">Ujian Selesai</h2>" +
+            "<p style=\"color:#bdc3c7;margin-top:20px;\">Terima kasih telah mengikuti Try Out 1.</p>" +
+            "<p style=\"color:#bdc3c7;\">Hasil telah tersimpan. Silakan tutup browser.</p>" +
+            "</div>";
+        document.getElementById("main-header").style.display = "none";
     }
 
     function dismissSecurity() {
-        document.getElementById('security-overlay').classList.remove('active');
+        document.getElementById("security-overlay").classList.remove("active");
         if (violations >= MAX_VIOLATIONS) {
             submitExam(true);
         }
@@ -733,80 +718,68 @@
 
     // ==================== SECURITY ====================
     function initSecurity() {
-        // 1. Anti right click
-        document.addEventListener('contextmenu', e => {
+        document.addEventListener("contextmenu", e => {
             e.preventDefault();
-            addViolation('Klik kanan (Right Click)');
+            addViolation("Klik kanan (Right Click)");
         });
 
-        // 2. Anti copy paste
-        document.addEventListener('copy', e => {
+        document.addEventListener("copy", e => {
             e.preventDefault();
-            addViolation('Copy (Ctrl+C)');
+            addViolation("Copy (Ctrl+C)");
         });
-        document.addEventListener('paste', e => {
+        document.addEventListener("paste", e => {
             e.preventDefault();
-            addViolation('Paste (Ctrl+V)');
+            addViolation("Paste (Ctrl+V)");
         });
-        document.addEventListener('cut', e => {
+        document.addEventListener("cut", e => {
             e.preventDefault();
-            addViolation('Cut (Ctrl+X)');
+            addViolation("Cut (Ctrl+X)");
         });
 
-        // 3. Anti keyboard shortcuts
-        document.addEventListener('keydown', e => {
+        document.addEventListener("keydown", e => {
             const key = e.key.toLowerCase();
             const ctrl = e.ctrlKey || e.metaKey;
 
-            // PrintScreen
-            if (key === 'printscreen' || key === 'snapshot') {
+            if (key === "printscreen" || key === "snapshot") {
                 e.preventDefault();
-                addViolation('PrintScreen');
-                navigator.clipboard.writeText('');
+                addViolation("PrintScreen");
+                navigator.clipboard.writeText("").catch(()=>{});
             }
 
-            // Ctrl+ shortcuts
             if (ctrl) {
-                const blocked = ['c', 'v', 'x', 'p', 's', 'a', 'u'];
+                const blocked = ["c", "v", "x", "p", "s", "a", "u"];
                 if (blocked.includes(key)) {
                     e.preventDefault();
-                    addViolation('Ctrl+' + key.toUpperCase());
+                    addViolation("Ctrl+" + key.toUpperCase());
                 }
-                // DevTools
-                if (key === 'shift' && (e.key === 'i' || e.key === 'j' || e.key === 'c')) {
+                if (key === "shift" && (e.key === "i" || e.key === "j" || e.key === "c")) {
                     e.preventDefault();
-                    addViolation('DevTools shortcut');
+                    addViolation("DevTools shortcut");
                 }
             }
 
-            // F12
-            if (key === 'f12') {
+            if (key === "f12") {
                 e.preventDefault();
-                addViolation('F12 (DevTools)');
+                addViolation("F12 (DevTools)");
             }
-
-            // Alt+Tab detection via blur
         });
 
-        // 4. Anti blur/tab switch
         let blurCount = 0;
-        window.addEventListener('blur', () => {
+        window.addEventListener("blur", () => {
             blurCount++;
             if (blurCount > 1) {
-                addViolation('Pindah tab/jendela (Alt+Tab)');
+                addViolation("Pindah tab/jendela (Alt+Tab)");
             }
         });
 
-        // 5. Anti leave page
-        window.addEventListener('beforeunload', e => {
+        window.addEventListener("beforeunload", e => {
             if (!examSubmitted) {
                 e.preventDefault();
-                e.returnValue = 'Ujian sedang berlangsung. Yakin ingin keluar?';
+                e.returnValue = "Ujian sedang berlangsung. Yakin ingin keluar?";
                 return e.returnValue;
             }
         });
 
-        // 6. Fullscreen enforcement
         function enforceFullscreen() {
             if (!document.fullscreenElement && !examSubmitted) {
                 try {
@@ -814,42 +787,39 @@
                 } catch(e) {}
             }
         }
-        document.addEventListener('fullscreenchange', () => {
+        document.addEventListener("fullscreenchange", () => {
             if (!document.fullscreenElement && !examSubmitted) {
-                addViolation('Keluar Fullscreen');
+                addViolation("Keluar Fullscreen");
                 setTimeout(enforceFullscreen, 100);
             }
         });
         setTimeout(enforceFullscreen, 1000);
 
-        // 7. Clear clipboard periodically
         setInterval(() => {
-            navigator.clipboard.writeText('').catch(()=>{});
+            navigator.clipboard.writeText("").catch(()=>{});
         }, 300);
 
-        // 8. Flash overlay anti screen record
+        // Anti screen recording: flash overlay (interval 8 detik, sangat halus)
         setInterval(() => {
-            const flash = document.getElementById('flash-overlay');
-            flash.style.opacity = '0.3';
-            setTimeout(() => flash.style.opacity = '0', 100);
-        }, 2000);
+            const flash = document.getElementById("flash-overlay");
+            flash.style.opacity = "0.08";
+            setTimeout(() => flash.style.opacity = "0", 80);
+        }, 8000);
 
-        // 9. DevTools detection via window size
         setInterval(() => {
             const widthThreshold = window.outerWidth - window.innerWidth > 160;
             const heightThreshold = window.outerHeight - window.innerHeight > 160;
             if (widthThreshold || heightThreshold) {
-                addViolation('DevTools terdeteksi (window size)');
+                addViolation("DevTools terdeteksi (window size)");
             }
         }, 1000);
 
-        // 10. Debugger trap
         setInterval(() => {
             const start = performance.now();
             debugger;
             const end = performance.now();
             if (end - start > 100) {
-                addViolation('Debugger terdeteksi');
+                addViolation("Debugger terdeteksi");
             }
         }, 2000);
     }
@@ -857,19 +827,18 @@
     function addViolation(reason) {
         if (examSubmitted) return;
         violations++;
-        document.getElementById('violation-count').textContent = 'Pelanggaran: ' + violations + '/' + MAX_VIOLATIONS;
-        document.getElementById('violation-count').classList.add('active');
-        document.getElementById('v-count').textContent = violations;
-        document.getElementById('security-msg').textContent = 'Pelanggaran: ' + reason;
-        document.getElementById('security-overlay').classList.add('active');
+        document.getElementById("violation-count").textContent = "Pelanggaran: " + violations + "/" + MAX_VIOLATIONS;
+        document.getElementById("violation-count").classList.add("active");
+        document.getElementById("v-count").textContent = violations;
+        document.getElementById("security-msg").textContent = "Pelanggaran: " + reason;
+        document.getElementById("security-overlay").classList.add("active");
 
         if (violations >= MAX_VIOLATIONS) {
-            document.getElementById('security-btn').textContent = 'Ujian Dikunci';
-            document.getElementById('security-btn').disabled = true;
+            document.getElementById("security-btn").textContent = "Ujian Dikunci";
+            document.getElementById("security-btn").disabled = true;
         }
     }
 
-    // ==================== START ====================
     window.onload = init;
 
     </script>
