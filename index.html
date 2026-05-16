@@ -848,11 +848,16 @@
         // ACCESS VERIFICATION (TOKEN SYSTEM)
         // ============================================
         function verifyAccess() {
+            // Debug info
+            console.log('=== CBT DEBUG ===');
+            console.log('Hostname:', window.location.hostname);
+            console.log('Path:', window.location.pathname);
+            console.log('Full URL:', window.location.href);
+
             const urlParams = new URLSearchParams(window.location.search);
             const token = urlParams.get('token');
 
-            // Debug info
-            console.log('CBT Loaded. Token from URL:', token ? 'ADA' : 'TIDAK ADA');
+            console.log('Token from URL:', token ? 'ADA' : 'TIDAK ADA');
 
             if (!token) {
                 // Coba fallback ke localStorage
